@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"github.com/dd3vahmad/plicense/cmd"
+)
 
 func main() {
-	fmt.Println("Helo from plicense")
+	cmd.RootCmd.Execute()
 }
