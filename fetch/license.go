@@ -55,11 +55,13 @@ func LicenseList(dir string) ([]entity.License, error) {
 
 func LicenseDetails(key string) (entity.License, error) {
 	path := filepath.Join("licenses", fmt.Sprintf("%s.json", key))
-	if file, err := os.Open(path); err == nil {
-		defer file.Close()
+	if _, err := os.Stat(path); err == nil {
+		file, _ := os.ReadFile(path)
 
 		var license entity.License
-		json.NewDecoder(file).Decode(&license)
+		if err := json.Unmarshal(file, &license); err != nil {
+			return entity.License{}, fmt.Errorf("failed to decode cached license: %w", err)
+		}
 
 		return license, nil
 	}
@@ -80,11 +82,6 @@ func LicenseDetails(key string) (entity.License, error) {
 	if err := json.Unmarshal(body, &license); err != nil {
 		return entity.License{}, err
 	}
-
-	newLicense, _ := os.Create(path)
-	defer newLicense.Close()
-
-	json.NewEncoder(newLicense).Encode(license)
 
 	return license, nil
 }

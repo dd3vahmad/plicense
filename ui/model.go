@@ -1,8 +1,10 @@
 package ui
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/viewport"
@@ -48,12 +50,28 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case "enter":
 			selected := m.list.SelectedItem().(entity.License)
+			if selected.Body == "" {
+				fetched, err := fetch.LicenseDetails(selected.Key)
+				if err != nil {
+					return m, cmd
+				}
+				selected.Body = fetched.Body
+			}
 			err := os.WriteFile("LICENSE", []byte(selected.Body), 0o644)
+
 			if err != nil {
 				fmt.Println("Failed to write LICENSE:", err)
 			} else {
 				fmt.Printf("\n Added '%s' license to ./LICENSE\n", selected.Name)
 			}
+
+			// Cache selected license in a JSON file for later use.
+			path := filepath.Join("licenses", fmt.Sprintf("%s.json", selected.Key))
+
+			newLicense, _ := os.Create(path)
+			defer newLicense.Close()
+
+			json.NewEncoder(newLicense).Encode(selected)
 			return m, tea.Quit
 
 		case "u", "ctrl+j":
