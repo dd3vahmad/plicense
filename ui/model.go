@@ -48,7 +48,7 @@ func NewModel(dir string) (model, error) {
 	licenseList := list.New(items, list.NewDefaultDelegate(), 25, 15)
 	licenseList.Title = "Select a License"
 
-	vp := viewport.New(60, 15)
+	vp := viewport.New(60, 20)
 	vp.SetContent(licenses[0].content)
 
 	return model{list: licenseList, viewport: vp, licenses: licenses}, nil

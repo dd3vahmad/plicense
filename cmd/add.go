@@ -15,7 +15,7 @@ var addCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		m, err := ui.NewModel("licenses")
 		if err != nil {
-			return fmt.Errorf("Error loading licenses: %w", err)
+			return fmt.Errorf("error loading licenses: %w", err)
 		}
 
 		p := tea.NewProgram(m)
@@ -27,6 +27,6 @@ var addCmd = &cobra.Command{
 	},
 }
 
-func cmd() {
+func init() {
 	rootCmd.AddCommand(addCmd)
 }
