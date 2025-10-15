@@ -12,12 +12,20 @@ import (
 )
 
 type License struct {
-	title, path, content string
+	Key         string `json:"key"`
+	Name        string `json:"name"`
+	URL         string `json:"url"`
+	SpdxID      string `json:"spdx_id"`
+	path        string
+	Description string   `json:"description"`
+	Body        string   `json:"body"`
+	Permissions []string `json:"permissions"`
+	Conditions  []string `json:"conditions"`
+	Limitations []string `json:"limitations"`
 }
 
-func (l License) Title() string       { return l.title }
-func (l License) Description() string { return "" }
-func (l License) FilterValue() string { return l.title }
+func (l License) Title() string       { return l.Name }
+func (l License) FilterValue() string { return l.Name }
 
 type model struct {
 	list     list.Model
@@ -35,9 +43,9 @@ func NewModel(dir string) (model, error) {
 	for _, f := range files {
 		path := filepath.Join(dir, f.Name())
 		data, _ := os.ReadFile(path)
-		title := f.Name()
-		content := string(data)
-		licenses = append(licenses, License{title: title, path: path, content: content})
+		name := f.Name()
+		body := string(data)
+		licenses = append(licenses, License{Name: name, path: path, Body: body})
 	}
 
 	items := make([]list.Item, len(licenses))
@@ -49,7 +57,7 @@ func NewModel(dir string) (model, error) {
 	licenseList.Title = "Select a License"
 
 	vp := viewport.New(60, 20)
-	vp.SetContent(licenses[0].content)
+	vp.SetContent(licenses[0].Body)
 
 	return model{list: licenseList, viewport: vp, licenses: licenses}, nil
 }
@@ -67,11 +75,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case "enter":
 			selected := m.list.SelectedItem().(License)
-			err := os.WriteFile("LICENSE", []byte(selected.content), 0o644)
+			err := os.WriteFile("LICENSE", []byte(selected.Body), 0o644)
 			if err != nil {
 				fmt.Println("Failed to write LICENSE:", err)
 			} else {
-				fmt.Printf("\n Added '%s' license to ./LICENSE\n", selected.title)
+				fmt.Printf("\n Added '%s' license to ./LICENSE\n", selected.Name)
 			}
 			return m, tea.Quit
 
@@ -88,7 +96,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	m.list, cmd = m.list.Update(msg)
 	if sel, ok := m.list.SelectedItem().(License); ok {
-		m.viewport.SetContent(sel.content)
+		m.viewport.SetContent(sel.Body)
 	}
 
 	return m, cmd
