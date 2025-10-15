@@ -8,12 +8,12 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dd3vahmad/plicense/ui"
+	"github.com/dd3vahmad/plicense/entity"
 )
 
 const baseURL = "https://api.github.com/licenses"
 
-func LicenseList(dir string) ([]ui.License, error) {
+func LicenseList(dir string) ([]entity.License, error) {
 	path := filepath.Join(dir, "licenses.json")
 	file, err := os.Open(path)
 
@@ -21,19 +21,19 @@ func LicenseList(dir string) ([]ui.License, error) {
 		res, err := http.Get(baseURL)
 		if err != nil {
 			fmt.Printf("error fetching licenses")
-			return []ui.License{}, err
+			return []entity.License{}, err
 		}
 
 		defer res.Body.Close()
 
 		body, err := io.ReadAll(res.Body)
 		if err != nil {
-			return []ui.License{}, err
+			return []entity.License{}, err
 		}
 
-		var data []ui.License
+		var data []entity.License
 		if err := json.Unmarshal(body, &data); err != nil {
-			return []ui.License{}, err
+			return []entity.License{}, err
 		}
 
 		newFile, _ := os.Create(path)
@@ -44,29 +44,29 @@ func LicenseList(dir string) ([]ui.License, error) {
 		return data, nil
 	} else {
 		defer file.Close()
-		var licenses []ui.License
+		var licenses []entity.License
 		json.NewDecoder(file).Decode(&licenses)
 
 		return licenses, nil
 	}
 }
 
-func LicenseDetails(key string) (ui.License, error) {
+func LicenseDetails(key string) (entity.License, error) {
 	res, err := http.Get(fmt.Sprintf("%s/%s", baseURL, key))
 	if err != nil {
-		return ui.License{}, err
+		return entity.License{}, err
 	}
 
 	defer res.Body.Close()
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		return ui.License{}, err
+		return entity.License{}, err
 	}
 
-	var license ui.License
+	var license entity.License
 	if err := json.Unmarshal(body, &license); err != nil {
-		return ui.License{}, err
+		return entity.License{}, err
 	}
 
 	return license, nil

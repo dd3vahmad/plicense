@@ -3,60 +3,33 @@ package ui
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/dd3vahmad/plicense/entity"
+	"github.com/dd3vahmad/plicense/fetch"
 )
-
-type License struct {
-	Key         string `json:"key"`
-	Name        string `json:"name"`
-	URL         string `json:"url"`
-	SpdxID      string `json:"spdx_id"`
-	path        string
-	Description string   `json:"description"`
-	Body        string   `json:"body"`
-	Permissions []string `json:"permissions"`
-	Conditions  []string `json:"conditions"`
-	Limitations []string `json:"limitations"`
-}
-
-func (l License) Title() string       { return l.Name }
-func (l License) FilterValue() string { return l.Name }
 
 type model struct {
 	list     list.Model
 	viewport viewport.Model
-	licenses []License
+	licenses []entity.License
 }
 
-func NewModel(dir string, lcs []License) (model, error) {
-	files, err := os.ReadDir(dir)
-	if err != nil {
-		return model{}, err
-	}
-
-	var licenses []License
-	for _, f := range files {
-		path := filepath.Join(dir, f.Name())
-		data, _ := os.ReadFile(path)
-		name := f.Name()
-		body := string(data)
-		licenses = append(licenses, License{Name: name, path: path, Body: body})
-	}
-
+func NewModel(licenses []entity.License) (model, error) {
 	items := make([]list.Item, len(licenses))
 	for i, l := range licenses {
 		items[i] = l
 	}
 
-	licenseList := list.New(items, list.NewDefaultDelegate(), 25, 15)
+	listDelegate := list.NewDefaultDelegate()
+	listDelegate.ShowDescription = true
+	licenseList := list.New(items, listDelegate, 25, 15)
 	licenseList.Title = "Select a License"
 
-	vp := viewport.New(60, 20)
+	vp := viewport.New(64, 20)
 	vp.SetContent(licenses[0].Body)
 
 	return model{list: licenseList, viewport: vp, licenses: licenses}, nil
@@ -74,7 +47,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 
 		case "enter":
-			selected := m.list.SelectedItem().(License)
+			selected := m.list.SelectedItem().(entity.License)
 			err := os.WriteFile("LICENSE", []byte(selected.Body), 0o644)
 			if err != nil {
 				fmt.Println("Failed to write LICENSE:", err)
@@ -95,8 +68,18 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	}
 
 	m.list, cmd = m.list.Update(msg)
-	if sel, ok := m.list.SelectedItem().(License); ok {
-		m.viewport.SetContent(sel.Body)
+	if sel, ok := m.list.SelectedItem().(entity.License); ok {
+		if sel.Body == "" {
+			fetched, err := fetch.LicenseDetails(sel.Key)
+			if err != nil {
+				m.viewport.SetContent("Error fetching license details")
+			} else {
+				sel.Body = fetched.Body
+				m.viewport.SetContent(sel.Body)
+			}
+		} else {
+			m.viewport.SetContent(sel.Body)
+		}
 	}
 
 	return m, cmd
