@@ -5,6 +5,7 @@ import (
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/dd3vahmad/plicense/fetch"
 	ui "github.com/dd3vahmad/plicense/ui"
 	"github.com/spf13/cobra"
 )
@@ -28,5 +29,15 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
+	// licenses, err := fetch.LicenseList()
+	license, err := fetch.LicenseDetails("mit")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	// fmt.Printf("LicenseList: %v\n", licenses)
+	fmt.Printf("License: %v\n", license)
+
 	rootCmd.AddCommand(addCmd)
 }

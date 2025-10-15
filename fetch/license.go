@@ -17,11 +17,11 @@ func LicenseList() ([]ui.License, error) {
 		fmt.Printf("error fetching licenses")
 		return []ui.License{}, err
 	}
+
 	defer res.Body.Close()
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println("error reading response body: ", err)
 		return []ui.License{}, err
 	}
 
@@ -31,4 +31,25 @@ func LicenseList() ([]ui.License, error) {
 	}
 
 	return data, nil
+}
+
+func LicenseDetails(key string) (ui.License, error) {
+	res, err := http.Get(fmt.Sprintf("%s/%s", baseURL, key))
+	if err != nil {
+		return ui.License{}, err
+	}
+
+	defer res.Body.Close()
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return ui.License{}, err
+	}
+
+	var license ui.License
+	if err := json.Unmarshal(body, &license); err != nil {
+		return ui.License{}, err
+	}
+
+	return license, nil
 }
