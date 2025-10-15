@@ -27,11 +27,12 @@ func NewModel(licenses []entity.License) (model, error) {
 	}
 
 	listDelegate := list.NewDefaultDelegate()
-	listDelegate.ShowDescription = true
+	listDelegate.SetHeight(1)
+	listDelegate.SetSpacing(1)
 	licenseList := list.New(items, listDelegate, 25, 15)
 	licenseList.Title = "Select a License"
 
-	vp := viewport.New(64, 20)
+	vp := viewport.New(72, 24)
 	vp.SetContent(licenses[0].Body)
 
 	return model{list: licenseList, viewport: vp, licenses: licenses}, nil

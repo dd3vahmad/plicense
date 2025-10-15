@@ -1,37 +1,57 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
+	"os/exec"
+	"path/filepath"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/dd3vahmad/plicense/entity"
 	"github.com/dd3vahmad/plicense/fetch"
 	"github.com/dd3vahmad/plicense/ui"
 	"github.com/spf13/cobra"
 )
 
+func isPingReachable() bool {
+	cmd := exec.Command("ping", "-c", "1", "www.google.com")
+	err := cmd.Run()
+	return err == nil
+}
+
 var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Interactively choose and add a license to your project",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		// files, err := os.ReadDir(dir)
-		// if err != nil {
-		// 	return model{}, err
-		// }
+		dir := "licenses"
 
-		// var licenses []License
-		// for _, f := range files {
-		// 	path := filepath.Join(dir, f.Name())
-		// 	data, _ := os.ReadFile(path)
-		// 	name := f.Name()
-		// 	body := string(data)
-		// 	licenses = append(licenses, License{Name: name, path: path, Body: body})
-		// }
+		var licenses []entity.License
+		if isPingReachable() {
+			lcs, err := fetch.LicenseList(dir)
+			if err != nil {
+				fmt.Println(err)
+				return nil
+			}
+			licenses = lcs
+		} else {
+			files, err := os.ReadDir(dir)
+			if err != nil {
+				return err
+			}
 
-		licenses, err := fetch.LicenseList("licenses")
-		if err != nil {
-			fmt.Println(err)
-			return nil
+			for _, f := range files {
+				if f.Name() == "licenses.json" {
+					continue
+				}
+
+				path := filepath.Join(dir, f.Name())
+				data, _ := os.ReadFile(path)
+
+				var license entity.License
+				json.Unmarshal(data, &license)
+				licenses = append(licenses, license)
+			}
 		}
 
 		m, err := ui.NewModel(licenses)
