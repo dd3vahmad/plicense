@@ -75,10 +75,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			return m, tea.Quit
 
-		case "pgup":
+		case "u", "ctrl+j":
 			m.viewport.ScrollUp(5)
-		case "pgdn":
+		case "d", "ctrl+k":
 			m.viewport.ScrollDown(5)
+		case "l", "ctrl+l":
+			m.viewport.ScrollLeft(5)
+		case "r", "ctrl+h":
+			m.viewport.ScrollRight(5)
 		}
 	}
 
@@ -93,6 +97,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m model) View() string {
 	return lipgloss.JoinHorizontal(lipgloss.Top,
 		m.list.View(),
-		lipgloss.NewStyle().Margin(0, 2).Render(m.viewport.View()),
+		lipgloss.NewStyle().Margin(0, 2).Border(lipgloss.RoundedBorder()).Padding(2).BorderForeground(lipgloss.Color("205")).Render(m.viewport.View()),
 	)
 }

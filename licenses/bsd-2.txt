@@ -1,6 +1,6 @@
 BSD 2-Clause License
 
-Copyright (c) Year, Full name
+Copyright (c) <Year>, <Full name>
 
 Redistribution and use in source and binary forms, 
 with or without modification, are permitted provided 
