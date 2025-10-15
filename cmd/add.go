@@ -14,7 +14,13 @@ var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Interactively choose and add a license to your project",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		m, err := ui.NewModel("licenses")
+		licenses, err := fetch.LicenseList("licenses")
+		if err != nil {
+			fmt.Println(err)
+			return nil
+		}
+
+		m, err := ui.NewModel("licenses", licenses)
 		if err != nil {
 			return fmt.Errorf("error loading licenses: %w", err)
 		}
@@ -29,15 +35,15 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
-	// licenses, err := fetch.LicenseList()
-	license, err := fetch.LicenseDetails("mit")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	// licenses, err := fetch.LicenseList("licenses")
+	// license, err := fetch.LicenseDetails("mit")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
 
 	// fmt.Printf("LicenseList: %v\n", licenses)
-	fmt.Printf("License: %v\n", license)
+	// fmt.Printf("License: %v\n", license)
 
 	rootCmd.AddCommand(addCmd)
 }

@@ -33,7 +33,7 @@ type model struct {
 	licenses []License
 }
 
-func NewModel(dir string) (model, error) {
+func NewModel(dir string, lcs []License) (model, error) {
 	files, err := os.ReadDir(dir)
 	if err != nil {
 		return model{}, err
