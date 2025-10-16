@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dd3vahmad/plicense/entity"
+	"github.com/dd3vahmad/plicense/internals/entity"
 )
 
 const baseURL = "https://api.github.com/licenses"

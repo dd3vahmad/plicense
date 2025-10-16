@@ -10,8 +10,8 @@ import (
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/dd3vahmad/plicense/entity"
-	"github.com/dd3vahmad/plicense/fetch"
+	"github.com/dd3vahmad/plicense/internals/entity"
+	"github.com/dd3vahmad/plicense/internals/fetch"
 )
 
 type model struct {

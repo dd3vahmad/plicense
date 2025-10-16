@@ -1,4 +1,4 @@
-package cmd
+package cli
 
 import (
 	"encoding/json"
@@ -8,9 +8,9 @@ import (
 	"path/filepath"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/dd3vahmad/plicense/entity"
-	"github.com/dd3vahmad/plicense/fetch"
-	"github.com/dd3vahmad/plicense/ui"
+	"github.com/dd3vahmad/plicense/internals/entity"
+	"github.com/dd3vahmad/plicense/internals/fetch"
+	"github.com/dd3vahmad/plicense/internals/ui"
 	"github.com/spf13/cobra"
 )
 
