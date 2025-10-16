@@ -1,3 +1,5 @@
 *bin
 plicense
 licenses
+# Added by goreleaser init:
+dist/
