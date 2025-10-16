@@ -75,13 +75,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			json.NewEncoder(newLicense).Encode(selected)
 			return m, tea.Quit
 
-		case "u", "ctrl+j":
+		case "t":
 			m.viewport.ScrollUp(5)
-		case "d", "ctrl+k":
+		case "b":
 			m.viewport.ScrollDown(5)
-		case "l", "ctrl+l":
+		case "s":
 			m.viewport.ScrollLeft(5)
-		case "r", "ctrl+h":
+		case "e":
 			m.viewport.ScrollRight(5)
 		}
 	}
