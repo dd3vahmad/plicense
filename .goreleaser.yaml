@@ -5,22 +5,29 @@ project_name: plicense
 before:
   hooks:
     - go mod tidy
-    - go build
 
 builds:
   - env:
       - CGO_ENABLED=0
+    main: ./cmd/plicense
+    binary: plicense
     goos:
       - linux
       - windows
       - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
 
 archives:
   - formats: [tar.gz]
-    # this name template makes the OS and Arch compatible with the results of `uname`.
     name_template: >-
       {{ .ProjectName }}_
-      {{- title .Os }}_
+      {{- .Os }}_
       {{- if eq .Arch "amd64" }}x86_64
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
@@ -32,10 +39,10 @@ archives:
 
 changelog:
   sort: asc
-  filters:
-    exclude:
-      - "^docs:"
-      - "^test:"
+  use: github-native
+
+checksum:
+  name_template: "checksums.txt"
 
 release:
   footer: >-
