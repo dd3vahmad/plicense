@@ -16,6 +16,8 @@ before:
     - go generate ./...
 
 builds:
+  - main: "./main.go"
+    binary: "plicense"
   - env:
       - CGO_ENABLED=0
     goos:
