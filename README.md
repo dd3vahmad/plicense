@@ -7,20 +7,48 @@ even need to check if there any copyright information you need to change (It's a
 
 pLICENSE (Project license) is a simple, fast and powerful CLI tool for adding open-source licenses to your project.
 
-## Usage
+## Installation
 
-To install the latest version of plicense run:
+### Download prebuilt binary
+Grab the latest binary for your OS from [Releases](https://github.com/dd3vahmad/plicense/releases).
+
+Extract and move it into your `$PATH`:
+```bash
+tar -xzf plicense_linux_x86_64.tar.gz
+sudo mv plicense /usr/local/bin/
+```
+
+### Install with Go
 ```
 go install github.com/dd3vahmad/plicense@latest
 ```
 
-Root command:
+### Install with Homebrew
+#### First tap installation
 ```
-plicense
+brew tap dd3vahmad/homebrew-tap
+brew install plicense
 ```
-To add new license:
+
+#### After first tap
+```
+brew install dd3vahmad/tap/plicense
+```
+
+## Usage
+### Root command (Confirm installtion):
+```
+plicense           -> About plicense
+
+plicense --version -> To check plicense version
+```
+### To add new license:
 ```
 plicense add
+```
+### To remove project license:
+```
+plicense remove
 ```
 
 ## Advanced Usage

@@ -37,6 +37,20 @@ archives:
       - goos: windows
         formats: [zip]
 
+brews:
+  - name: plicense
+    tap: 
+      owner: dd3vahmad
+      name: homebrew-tap
+    commit_author:
+      name: "Ahmad Rabiu"
+      email: "rabiu2993@gmail.com"
+    description: "A license management CLI written in Go"
+    homepage: "https://github.com/dd3vahmad/plicense"
+    license: "MIT"
+    install: |
+      bin.install "plicense"
+
 changelog:
   sort: asc
   use: github-native
