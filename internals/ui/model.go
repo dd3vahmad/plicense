@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"path/filepath"
 
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/viewport"
@@ -67,7 +66,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 			// Cache selected license in a JSON file for later use.
-			path := filepath.Join("licenses", fmt.Sprintf("%s.json", selected.Key))
+			path, _ := fetch.LicensePath(selected.Key)
 
 			newLicense, _ := os.Create(path)
 			defer newLicense.Close()

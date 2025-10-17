@@ -11,11 +11,28 @@ import (
 	"github.com/dd3vahmad/plicense/internals/entity"
 )
 
+func LicensePath(key string) (string, error) {
+	cacheDir, err := os.UserCacheDir()
+	if err != nil {
+		return "", fmt.Errorf("failed to get user cache directory %w", err)
+	}
+
+	licenseDir := filepath.Join(cacheDir, "plicense", "licenses")
+	if err := os.MkdirAll(licenseDir, os.ModePerm); err != nil {
+		return "", fmt.Errorf("failed to create licenses dir: %w", err)
+	}
+
+	path := filepath.Join(licenseDir, "licenses.json")
+	if key != "" {
+		path = filepath.Join(licenseDir, fmt.Sprintf("%s.json", key))
+	}
+	return path, nil
+}
+
 const baseURL = "https://api.github.com/licenses"
 
-func LicenseList(dir string) ([]entity.License, error) {
-	path := filepath.Join(dir, "licenses.json")
-	os.MkdirAll(filepath.Dir(path), os.ModePerm)
+func LicenseList() ([]entity.License, error) {
+	path, _ := LicensePath("")
 
 	file, err := os.Open(path)
 
@@ -54,7 +71,8 @@ func LicenseList(dir string) ([]entity.License, error) {
 }
 
 func LicenseDetails(key string) (entity.License, error) {
-	path := filepath.Join("licenses", fmt.Sprintf("%s.json", key))
+	path, _ := LicensePath(key)
+
 	if _, err := os.Stat(path); err == nil {
 		file, _ := os.ReadFile(path)
 

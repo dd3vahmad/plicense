@@ -24,11 +24,12 @@ var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Interactively choose and add a license to your project",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		dir := "licenses"
+		licensesFilePath, _ := fetch.LicensePath("")
+		dir := filepath.Dir(licensesFilePath)
 
 		var licenses []entity.License
 		if isPingReachable() {
-			lcs, err := fetch.LicenseList(dir)
+			lcs, err := fetch.LicenseList()
 			if err != nil {
 				fmt.Println(err)
 				return nil
