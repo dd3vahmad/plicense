@@ -39,9 +39,10 @@ archives:
 
 brews:
   - name: plicense
-    tap: 
+    repository: 
       owner: dd3vahmad
       name: homebrew-tap
+      token: {{ .Env.GITHUB_TOKEN }}
     commit_author:
       name: "Ahmad Rabiu"
       email: "rabiu2993@gmail.com"
