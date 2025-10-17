@@ -18,11 +18,6 @@ tar -xzf plicense_linux_x86_64.tar.gz
 sudo mv plicense /usr/local/bin/
 ```
 
-### Install with Go
-```
-go install github.com/dd3vahmad/plicense@latest
-```
-
 ### Install with Homebrew
 #### First tap installation
 ```
@@ -33,6 +28,16 @@ brew install plicense
 #### After first tap
 ```
 brew install dd3vahmad/tap/plicense
+```
+
+### Install with Shell Script (Linux/macOS)
+```
+curl -fsSL https://raw.githubusercontent.com/dd3vahmad/plicense/master/install.sh | bash
+```
+
+### Install with Go
+```
+go install github.com/dd3vahmad/plicense@latest
 ```
 
 ## Usage
