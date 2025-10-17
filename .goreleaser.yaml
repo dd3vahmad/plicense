@@ -42,7 +42,7 @@ homebrew_casks:
     repository: 
       owner: dd3vahmad
       name: homebrew-tap
-      token: "{{ .Env.GITHUB_TOKEN }}"
+      token: "{{ .Env.GH_PAT }}"
     commit_author:
       name: "Ahmad Rabiu"
       email: "rabiu2993@gmail.com"
