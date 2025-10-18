@@ -55,7 +55,7 @@ var addCmd = &cobra.Command{
 			}
 		}
 
-		m, err := ui.NewModel(licenses)
+		m, err := ui.NewLicensesListModel(licenses)
 		if err != nil {
 			return fmt.Errorf("error loading licenses: %w", err)
 		}
