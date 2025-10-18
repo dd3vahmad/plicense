@@ -37,7 +37,7 @@ func NewLicensesListModel(licenses []entity.License) (model, error) {
 	vp := viewport.New(72, 24)
 	vp.SetContent(licenses[0].Body)
 
-	return model{list: licenseList, viewport: vp, licenses: licenses}, nil
+	return model{list: licenseList, viewport: vp, licenses: licenses, showList: true}, nil
 }
 
 func NewLicenseModel() (model, error) {
@@ -132,7 +132,12 @@ func (m model) View() string {
 	if m.showList {
 		return lipgloss.JoinHorizontal(lipgloss.Top,
 			m.list.View(),
-			lipgloss.NewStyle().Margin(0, 2).Border(lipgloss.RoundedBorder()).Padding(2).BorderForeground(lipgloss.Color("205")).Render(m.viewport.View()),
+			lipgloss.NewStyle().
+				Margin(0, 2).
+				Border(lipgloss.RoundedBorder()).
+				Padding(2).
+				BorderForeground(lipgloss.Color("205")).
+				Render(m.viewport.View()),
 		)
 	}
 
