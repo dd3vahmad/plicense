@@ -16,7 +16,7 @@ var rootCmd = &cobra.Command{
 	Long:    "plicense lets you preview, add, and manage licenses for your projects using an interactive terminal UI.",
 	Version: Version,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("%s", color.HiBlueString("\nName: pLICENSE\n"))
+		fmt.Printf("\nName: %s", color.HiBlueString("pLICENSE\n"))
 		fmt.Printf("Version: v%s\n", color.HiYellowString(Version))
 		fmt.Printf("Commit: %s\n", color.HiMagentaString(Commit))
 		fmt.Printf("Built at: %s\n", color.HiCyanString(Date))

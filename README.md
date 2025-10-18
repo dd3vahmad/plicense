@@ -45,7 +45,17 @@ go install github.com/dd3vahmad/plicense@latest
 ```
 plicense           -> About plicense
 
+plicense help
+plicense --help    -> To get help
+plicense -h
+
+plicense version
 plicense --version -> To check plicense version
+plicense -v
+```
+### To update your plicense installtion
+```
+plicense update
 ```
 ### To add new license:
 ```
@@ -55,6 +65,14 @@ plicense add
 ```
 plicense remove
 ```
+### To view project license:
+> run this command only in the root of your project (where the LICENSE file is)
+```
+plicense view
+```
 
 ## Advanced Usage
--- Coming soon
+### To add default name
+```
+plicense config.name "Your name"
+```
