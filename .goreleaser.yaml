@@ -20,8 +20,9 @@ builds:
       - arm64
     ldflags:
       - -s -w
-      - -X main.version={{.Version}}
-      - -X main.commit={{.Commit}}
+      - -X github.com/dd3vahmad/plicense/internals/cli.Version={{.Version}}
+      - -X github.com/dd3vahmad/plicense/internals/cli.Commit={{.ShortCommit}}
+      - -X github.com/dd3vahmad/plicense/internals/cli.Date={{.Date}}
 
 archives:
   - formats: [tar.gz]

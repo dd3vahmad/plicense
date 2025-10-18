@@ -8,9 +8,10 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "plicense",
-	Short: "Add open-source licenses to your project interactively",
-	Long:  "plicense lets you preview and add licenses to your project using an interactive terminal UI.",
+	Use:     "plicense",
+	Short:   "Add open-source licenses to your project interactively",
+	Long:    "plicense lets you preview and add licenses to your project using an interactive terminal UI.",
+	Version: Version,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Use 'plicense add' to start the interactive license picker")
 	},
