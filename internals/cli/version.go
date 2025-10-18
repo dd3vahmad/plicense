@@ -17,15 +17,15 @@ var (
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Show plicense version information",
+	Short: "Show pLICENSE version information",
 	Run: func(cmd *cobra.Command, args []string) {
 		if shortOutput {
-			fmt.Println(Version)
+			fmt.Printf("v%s\n", Version)
 			return
 		}
-		fmt.Printf("%s %s\n", color.HiCyanString("plicense"), color.HiYellowString(Version))
-		fmt.Printf("commit: %s\n", Commit)
-		fmt.Printf("built at: %s\n", Date)
+		fmt.Printf("v%s\n", color.HiYellowString(Version))
+		fmt.Printf("Commit: %s\n", Commit)
+		fmt.Printf("Built at: %s\n", Date)
 	},
 }
 
