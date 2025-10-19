@@ -72,7 +72,20 @@ plicense view
 ```
 
 ## Advanced Usage
+> You can use these commands in combinations too.
+
 ### To add default name
 ```
-plicense config.name "Your name"
+plicense config --name="Your name"
 ```
+### To add default license
+```
+plicense config --default=<license_key>
+```
+### To show plicense configuration
+```
+plicense config --show
+
+plicense config -s
+```
+
