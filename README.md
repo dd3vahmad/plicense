@@ -41,7 +41,7 @@ go install github.com/dd3vahmad/plicense@latest
 ```
 
 ## Usage
-### Root command (Confirm installtion):
+### Root command (Confirm installation):
 ```
 plicense           -> About plicense
 
