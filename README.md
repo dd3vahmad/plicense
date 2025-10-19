@@ -53,7 +53,7 @@ plicense version
 plicense --version -> To check plicense version
 plicense -v
 ```
-### To update your plicense installtion
+### To update your plicense installation
 ```
 plicense update
 ```
